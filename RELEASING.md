@@ -1,6 +1,6 @@
 # Releasing an update
 
-Students get updates from **GitHub Releases** of `thenahraf/tnp-student`:
+Students get updates from **GitHub Releases** of `urraf/tnp-student`:
 
 - the app checks `releases/latest` on start (and about twice a day in the background) and offers the update in-app;
 - the website's Download button always points at `releases/latest/download/TnP-Student.apk`.

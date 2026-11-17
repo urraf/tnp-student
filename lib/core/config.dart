@@ -18,9 +18,9 @@ class AppConfig {
   // ----------------------------------------------------------- Releases --
   // Updates are published as GitHub Releases. Each release must attach the APK
   // as [apkAssetName] and use a tag like `v1.2.0` matching pubspec `version`.
-  static const githubRepo = 'thenahraf/tnp-student';
+  static const githubRepo = 'urraf/tnp-student';
   static const apkAssetName = 'TnP-Student.apk';
-  static const websiteUrl = 'https://thenahraf.github.io/tnp-student/';
+  static const websiteUrl = 'https://urraf.github.io/tnp-student/';
   static const latestReleaseApi = 'https://api.github.com/repos/$githubRepo/releases/latest';
 }
 

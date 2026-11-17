@@ -1,6 +1,6 @@
 // TnP Student website. Change CONFIG if the repository moves.
 const CONFIG = {
-  repo: 'thenahraf/tnp-student', // GitHub "owner/name"
+  repo: 'urraf/tnp-student', // GitHub "owner/name"
   apk: 'TnP-Student.apk', // asset name attached to every release
 };
 
