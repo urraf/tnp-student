@@ -60,6 +60,14 @@ android {
     }
 }
 
+// Release APKs ship ARM only: phones are ARM, and x86 (emulators) would add ~30 MB
+// (Flutter engine + PDF engine). Debug builds keep x86 so the emulator still works.
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        variant.packaging.jniLibs.excludes.addAll(listOf("lib/x86/**", "lib/x86_64/**"))
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pdfrx/pdfrx.dart';
 import 'package:printing/printing.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,7 +12,8 @@ import '../../../state/auth.dart';
 import '../../widgets/common.dart';
 import '../../widgets/content.dart';
 
-/// In-app PDF viewer with download progress, share and open-in-browser.
+/// In-app PDF viewer with download progress, pinch/double-tap zoom, share and
+/// open-in-browser.
 class PdfViewerScreen extends ConsumerStatefulWidget {
   const PdfViewerScreen({super.key, required this.args});
   final PdfArgs args;
@@ -68,22 +70,10 @@ class _PdfViewerScreenState extends ConsumerState<PdfViewerScreen> {
     final bytes = _bytes;
     final Widget body;
     if (bytes != null) {
-      body = PdfPreview(
+      body = _ZoomablePdf(
         key: const ValueKey('pdf'),
-        build: (_) async => bytes,
-        useActions: false,
-        canChangeOrientation: false,
-        canChangePageFormat: false,
-        canDebug: false,
-        maxPageWidth: 900,
-        pdfFileName: _fileName,
-        scrollViewDecoration: BoxDecoration(color: context.palette.background),
-        pdfPreviewPageDecoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: [BoxShadow(color: context.palette.shadow, blurRadius: 16, offset: const Offset(0, 6))],
-        ),
-        onError: (ctx, e) => const ErrorState(error: 'This file could not be displayed. Try "Open in browser".'),
+        bytes: bytes,
+        sourceName: widget.args.url,
       );
     } else if (_error != null) {
       body = ErrorState(key: const ValueKey('err'), error: _error!, onRetry: _load);
@@ -138,6 +128,111 @@ class _PdfViewerScreenState extends ConsumerState<PdfViewerScreen> {
         ],
       ),
       body: AnimatedSwitcher(duration: const Duration(milliseconds: 300), child: body),
+    );
+  }
+}
+
+/// Continuous-scroll PDF with pinch-to-zoom (pages re-render sharply at every
+/// zoom level), double-tap to zoom in/out, a page counter and a scroll thumb.
+class _ZoomablePdf extends StatefulWidget {
+  const _ZoomablePdf({super.key, required this.bytes, required this.sourceName});
+  final Uint8List bytes;
+  final String sourceName;
+
+  @override
+  State<_ZoomablePdf> createState() => _ZoomablePdfState();
+}
+
+class _ZoomablePdfState extends State<_ZoomablePdf> {
+  final _controller = PdfViewerController();
+  final _page = ValueNotifier<int?>(null);
+  double? _fitZoom; // zoom level when the document first fits the screen
+
+  @override
+  void dispose() {
+    _page.dispose();
+    super.dispose();
+  }
+
+  bool _onTap(BuildContext context, PdfViewerController c, PdfViewerGeneralTapHandlerDetails d) {
+    if (d.type != PdfViewerGeneralTapType.doubleTap || !c.isReady) return false;
+    final fit = _fitZoom ?? c.currentZoom;
+    final zoomedIn = c.currentZoom > fit * 1.15;
+    c.zoomOnLocalPosition(
+      localPosition: d.localPosition,
+      newZoom: zoomedIn ? fit : (fit * 2.5).clamp(fit, c.maxScale),
+      duration: const Duration(milliseconds: 260),
+    );
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    return PdfViewer.data(
+      widget.bytes,
+      sourceName: widget.sourceName,
+      controller: _controller,
+      params: PdfViewerParams(
+        margin: 12,
+        backgroundColor: palette.background,
+        pageDropShadow: BoxShadow(color: palette.shadow, blurRadius: 14, offset: const Offset(0, 5)),
+        onViewerReady: (doc, c) {
+          _fitZoom = c.currentZoom;
+          _page.value = c.pageNumber ?? 1;
+        },
+        onPageChanged: (n) => _page.value = n,
+        onGeneralTap: _onTap,
+        errorBannerBuilder: (ctx, e, st, ref) =>
+            const ErrorState(error: 'This file could not be displayed. Try "Open in browser".'),
+        loadingBannerBuilder: (ctx, done, total) => const Center(child: CircularProgressIndicator()),
+        viewerOverlayBuilder: (ctx, size, handleLinkTap) => [
+          PdfViewerScrollThumb(
+            controller: _controller,
+            orientation: ScrollbarOrientation.right,
+            thumbSize: const Size(44, 28),
+            thumbBuilder: (ctx, thumbSize, pageNumber, c) => DecoratedBox(
+              decoration: BoxDecoration(
+                color: palette.card,
+                borderRadius: const BorderRadius.horizontal(left: Radius.circular(14)),
+                boxShadow: [BoxShadow(color: palette.shadow, blurRadius: 8)],
+              ),
+              child: Center(
+                child: Text(
+                  '${pageNumber ?? ''}',
+                  style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: MediaQuery.paddingOf(context).bottom + 14,
+            child: Center(
+              child: ValueListenableBuilder<int?>(
+                valueListenable: _page,
+                builder: (ctx, page, _) {
+                  if (page == null || !_controller.isReady) return const SizedBox.shrink();
+                  return DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.72),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                      child: Text(
+                        '$page / ${_controller.pageCount}',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
