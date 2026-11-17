@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Resources referenced only from Dart by name: keep them in shrunk release builds. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/tnp_new_company,@raw/tnp_new_notice,@drawable/ic_stat_tnp" />

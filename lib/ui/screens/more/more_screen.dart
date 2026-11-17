@@ -1,4 +1,3 @@
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,10 +5,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/alerts.dart';
 import '../../../core/config.dart';
+import '../../../core/system.dart';
+import '../../../core/updater.dart';
 import '../../../core/theme.dart';
 import '../../../state/auth.dart';
 import '../../../state/providers.dart';
+import '../../widgets/background_setup.dart';
 import '../../widgets/common.dart';
+import '../../widgets/update_sheet.dart';
 import '../../widgets/content.dart';
 import '../home_shell.dart';
 
@@ -187,6 +190,14 @@ class MoreScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(6),
                     child: Column(
                       children: [
+                        const _VersionTile(),
+                        ListTile(
+                          leading: const Icon(Icons.public_rounded),
+                          title: const Text('App website', style: TextStyle(fontWeight: FontWeight.w600)),
+                          subtitle: const Text('Share the download link with friends'),
+                          trailing: const Icon(Icons.open_in_new_rounded, size: 18),
+                          onTap: () => openLink(context, AppConfig.websiteUrl),
+                        ),
                         ListTile(
                           leading: const Icon(Icons.language_rounded),
                           title: const Text('Open web portal', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -241,7 +252,7 @@ class MoreScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   Center(
                     child: Text(
-                      '${AppConfig.appName} · v1.0.0',
+                      '${AppConfig.appName} · Developed by Farhan',
                       style: context.text.bodySmall?.copyWith(color: context.palette.muted),
                     ),
                   ),
@@ -304,24 +315,6 @@ class _AlertsCardState extends State<_AlertsCard> {
     }
   }
 
-  /// Many Android brands kill background work unless the app is exempt
-  /// from battery optimisation.
-  Future<void> _batterySettings() async {
-    if (defaultTargetPlatform != TargetPlatform.android) return;
-    try {
-      await const AndroidIntent(
-        action: 'android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
-        data: 'package:com.tnpnsut.student',
-      ).launch();
-    } catch (_) {
-      try {
-        await const AndroidIntent(action: 'android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS').launch();
-      } catch (e) {
-        showToast('Open Settings → Apps → TnP Student → Battery → Unrestricted', type: ToastType.info);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final on = _enabled ?? true;
@@ -349,20 +342,111 @@ class _AlertsCardState extends State<_AlertsCard> {
                             : const Icon(Icons.chevron_right_rounded),
                         onTap: _checking ? null : _checkNow,
                       ),
-                      if (defaultTargetPlatform == TargetPlatform.android)
-                        ListTile(
-                          leading: const Icon(Icons.battery_charging_full_rounded),
-                          title: const Text('Allow background checks', style: TextStyle(fontWeight: FontWeight.w600)),
-                          subtitle: const Text('Recommended on Xiaomi, Oppo, Vivo, Realme, OnePlus'),
-                          trailing: const Icon(Icons.open_in_new_rounded, size: 18),
-                          onTap: _batterySettings,
-                        ),
+                      if (defaultTargetPlatform == TargetPlatform.android) const _BackgroundStatusTile(),
                     ],
                   )
                 : const SizedBox(width: double.infinity),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Live "can alerts run while the app is closed?" status with a fix button.
+class _BackgroundStatusTile extends StatefulWidget {
+  const _BackgroundStatusTile();
+
+  @override
+  State<_BackgroundStatusTile> createState() => _BackgroundStatusTileState();
+}
+
+class _BackgroundStatusTileState extends State<_BackgroundStatusTile> with WidgetsBindingObserver {
+  bool? _ok;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refresh();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refresh();
+  }
+
+  Future<void> _refresh() async {
+    final ok = await SystemBridge.isIgnoringBatteryOptimizations();
+    if (mounted) setState(() => _ok = ok);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ok = _ok ?? true;
+    return ListTile(
+      leading: Icon(
+        ok ? Icons.verified_rounded : Icons.battery_alert_rounded,
+        color: ok ? AppColors.success : AppColors.warning,
+      ),
+      title: Text(
+        ok ? 'Background checks allowed' : 'Background checks restricted',
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Text(
+        ok ? 'Alerts arrive even when the app is closed' : 'Alerts may only appear when you open the app — tap to fix',
+      ),
+      trailing: Icon(ok ? Icons.tune_rounded : Icons.chevron_right_rounded),
+      onTap: () => showBackgroundSetupSheet(context),
+    );
+  }
+}
+
+/// Installed version + manual update check.
+class _VersionTile extends StatefulWidget {
+  const _VersionTile();
+
+  @override
+  State<_VersionTile> createState() => _VersionTileState();
+}
+
+class _VersionTileState extends State<_VersionTile> {
+  String _version = '';
+  bool _checking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Updater.currentVersion().then((v) => mounted ? setState(() => _version = v) : null);
+  }
+
+  Future<void> _check() async {
+    setState(() => _checking = true);
+    try {
+      await checkForUpdatesManually(context);
+    } catch (e) {
+      toastError(e);
+    } finally {
+      if (mounted) setState(() => _checking = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.system_update_rounded),
+      title: const Text('Check for updates', style: TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(_version.isEmpty ? 'TnP Student' : 'Version $_version'),
+      trailing: _checking
+          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.4))
+          : const Icon(Icons.chevron_right_rounded),
+      onTap: _checking ? null : _check,
     );
   }
 }

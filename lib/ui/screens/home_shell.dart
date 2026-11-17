@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/alerts.dart';
 import '../../core/theme.dart';
+import '../widgets/background_setup.dart';
+import '../widgets/update_sheet.dart';
 import '../widgets/content.dart';
 
 class _NavItem {
@@ -45,9 +47,19 @@ class _HomeShellState extends State<HomeShell> {
       _openPending();
       // Turn on background alerts after sign-in unless the user switched them off.
       try {
-        if (await Alerts.isEnabled()) await Alerts.enable();
+        if (await Alerts.isEnabled()) {
+          await Alerts.enable();
+          // Without this, Android may hold alerts until the app is opened.
+          if (mounted) await offerBackgroundSetupOnce(context);
+        }
       } catch (e) {
         debugPrint('Could not enable alerts: $e');
+      }
+      // New version on GitHub Releases? Offer it (snoozable).
+      try {
+        if (mounted) await promptForUpdateIfAny(context);
+      } catch (e) {
+        debugPrint('Update check failed: $e');
       }
     });
   }
@@ -63,7 +75,9 @@ class _HomeShellState extends State<HomeShell> {
     final route = Alerts.pendingRoute.value;
     if (route == null || !mounted) return;
     Alerts.pendingRoute.value = null;
-    if (route.startsWith('/job/') || route.startsWith('/notice/')) {
+    if (route == Alerts.updatePayload) {
+      checkForUpdatesManually(context);
+    } else if (route.startsWith('/job/') || route.startsWith('/notice/')) {
       context.push(route);
     } else {
       openLink(context, route);
