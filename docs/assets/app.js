@@ -15,9 +15,8 @@ const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel'
 const isMobile = isAndroid || isIOS || /Mobi/i.test(ua);
 
 // ---------------------------------------------------------------- Links ----
+// Every Download button (navbar included) downloads the APK directly.
 document.querySelectorAll('.js-download').forEach((a) => {
-  // The nav button scrolls to the install guide on desktop; everything else downloads.
-  if (a.closest('.nav') && !isMobile) return;
   a.href = downloadUrl;
   a.setAttribute('download', CONFIG.apk);
   a.addEventListener('click', () => {
@@ -36,6 +35,10 @@ fetch(releaseApi, { headers: { Accept: 'application/vnd.github+json' } })
     const version = String(rel.tag_name || '').replace(/^v/i, '');
     const asset = (rel.assets || []).find((x) => x.name === CONFIG.apk) || (rel.assets || []).find((x) => /\.apk$/i.test(x.name));
     const size = asset ? `${(asset.size / 1048576).toFixed(0)} MB` : '';
+    // Point straight at this release's file (skips one redirect).
+    if (asset?.browser_download_url) {
+      document.querySelectorAll('.js-download').forEach((a) => (a.href = asset.browser_download_url));
+    }
     const date = rel.published_at ? new Date(rel.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
     const short = [version && `v${version}`, size, 'free'].filter(Boolean).join(' · ');
     const long = [version && `Version ${version}`, date && `updated ${date}`, 'Android 7.0+', size].filter(Boolean).join(' · ');
