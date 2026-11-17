@@ -20,7 +20,7 @@ class AppConfig {
   // as [apkAssetName] and use a tag like `v1.2.0` matching pubspec `version`.
   static const githubRepo = 'urraf/tnp-student';
   static const apkAssetName = 'TnP-Student.apk';
-  static const websiteUrl = 'https://urraf.github.io/tnp-student/';
+  static const websiteUrl = 'https://tnp.nahraf.tech/';
   static const latestReleaseApi = 'https://api.github.com/repos/$githubRepo/releases/latest';
 }
 

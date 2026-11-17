@@ -8,7 +8,7 @@
   Unofficial, open-source Android app for NSUT students on top of the Training &amp; Placement portal.<br/>
   <a href="https://github.com/urraf/tnp-student/releases/latest/download/TnP-Student.apk"><b>⬇️ Download APK</b></a>
   &nbsp;·&nbsp;
-  <a href="https://urraf.github.io/tnp-student/">Website</a>
+  <a href="https://tnp.nahraf.tech/">Website (tnp.nahraf.tech)</a>
   &nbsp;·&nbsp;
   <a href="RELEASING.md">Releasing</a>
 </p>
