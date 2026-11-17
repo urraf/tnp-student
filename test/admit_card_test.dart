@@ -17,7 +17,10 @@ void main() {
       'degree': 'BTech',
       'batch': '2026',
     });
-    expect(admitQrData(s), '{"student_name":"Aarav Sharma","student_roll":"2022UCS1234","student_email":"aarav@nsut.ac.in","studentID":"s1"}');
+    expect(
+      admitQrData(s),
+      '{"student_name":"Aarav Sharma","student_roll":"2022UCS1234","student_email":"aarav@nsut.ac.in","studentID":"s1"}',
+    );
     final bytes = await buildAdmitCardPdf(s);
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
     final out = Platform.environment['PDF_OUT'];

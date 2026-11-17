@@ -1,17 +1,37 @@
-# tnp_student
+# TnP Student
 
-A new Flutter project.
+Unofficial, open-source Android app for NSUT students on top of the Training & Placement portal
+(`api.tnpnsut.in`, the same backend as student.tnpnsut.in).
 
-## Getting Started
+- **New-company alerts** with their own chime — checks every 15 minutes even when the app is closed
+  (exact wake-up alarms that survive Doze and reboots, WorkManager as backup)
+- One-tap apply with eligibility check, applications, announcements with search & tags
+- Profile, CGPA sync, drop-subject planner, resumes, hall card (QR + PDF), forms & NOC, feedback
+- **Self-updating** from GitHub Releases
 
-This project is a starting point for a Flutter application.
+Website: `docs/` (GitHub Pages) · Releasing updates: [RELEASING.md](RELEASING.md)
 
-A few resources to get you started if this is your first Flutter project:
+Developed by **Farhan** · [nahraf.tech](https://www.nahraf.tech)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter run                                   # real portal
+flutter run --dart-define=DEMO=true           # offline sample data, no account needed
+flutter run --dart-define=DEMO=true --dart-define=ALERT_MINUTES=2   # faster alert testing
+flutter test
+flutter build apk --release                   # signed with android/key.properties (see RELEASING.md)
+```
+
+## Layout
+
+```
+lib/core/     config, theme, API client, router, alerts (background checks), updater, system bridge
+lib/data/     models + repository (one method per portal endpoint)
+lib/state/    auth and feeds (Riverpod)
+lib/ui/       screens and widgets
+android/app/src/main/kotlin/…/MainActivity.kt   battery/autostart/installer bridge
+docs/         download website
+```
+
+Not affiliated with NSUT or its Training & Placement cell.

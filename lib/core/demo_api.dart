@@ -73,7 +73,7 @@ class DemoApiInterceptor extends Interceptor {
         ..._events[4],
         'id': path.split('/').last,
         'company': {'Name': 'Flipkart'},
-        'jobtitle': 'SDE-1 (Demo listing)',
+        'jobtitle': 'Software Development Engineer I',
       };
     }
     if (path.startsWith('/company-events/')) {
@@ -89,7 +89,7 @@ class DemoApiInterceptor extends Interceptor {
         ..._events[4],
         'id': 'live-$minute',
         'company': {'Name': 'Flipkart'},
-        'jobtitle': 'SDE-1 (Demo listing #${minute % 1000})',
+        'jobtitle': 'Software Development Engineer I',
         'type': 'FTE',
         'lastDate': _in(6),
       };
