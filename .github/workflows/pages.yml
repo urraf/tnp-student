@@ -1,0 +1,60 @@
+# Publishes the website (docs/) to GitHub Pages together with the latest release APK,
+# so tnp.nahraf.tech/TnP-Student.apk downloads directly — no github.com link, which the
+# GitHub mobile app would intercept and turn into a sign-in screen.
+#
+# Runs on every website change, on every published release, or manually (Actions tab).
+# One-time setup: Settings → Pages → Source: "GitHub Actions".
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', '.github/workflows/pages.yml']
+  release:
+    types: [published, edited]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  # Release events run on the tag, which the github-pages environment does not allow
+  # to deploy. Re-run this workflow on main instead.
+  redispatch:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "${{ github.repository }}" --ref main
+
+  deploy:
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the latest release APK to the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo "${{ github.repository }}" --pattern TnP-Student.apk --dir docs --clobber \
+            || echo "::warning::No published release with TnP-Student.apk yet; the site will link to GitHub."
+          ls -la docs
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

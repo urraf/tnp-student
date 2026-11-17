@@ -3,7 +3,8 @@
 Students get updates from **GitHub Releases** of `urraf/tnp-student`:
 
 - the app checks `releases/latest` on start (and about twice a day in the background) and offers the update in-app;
-- the website's Download button always points at `releases/latest/download/TnP-Student.apk`.
+- the website serves a copy of the latest release's APK at `tnp.nahraf.tech/TnP-Student.apk`
+  (copied by `.github/workflows/pages.yml` whenever a release is published — nothing to do by hand).
 
 ## Every release
 
@@ -28,7 +29,8 @@ Students get updates from **GitHub Releases** of `urraf/tnp-student`:
    gh release create v1.2.0 /tmp/TnP-Student.apk --title "TnP Student 1.2.0" --notes "- What changed"
    ```
 
-That's it — installed apps see the update within a day (or immediately on next open).
+That's it — installed apps see the update within a day (or immediately on next open), and the
+website starts serving the new APK about a minute after you publish (check the Actions tab).
 
 ## The signing key (critical)
 
@@ -44,6 +46,14 @@ APKs are fine for testing but must never be published as a release.
 
 ## Website
 
-The site lives in `docs/` and is served by GitHub Pages:
-Settings → Pages → *Deploy from a branch* → `main` / `docs`. It updates itself from the latest
-release (version, size, date); edit `docs/assets/app.js` → `CONFIG` if the repo name changes.
+The site lives in `docs/` and is deployed by GitHub Actions (`.github/workflows/pages.yml`)
+together with the latest APK, at https://tnp.nahraf.tech.
+
+One-time setup: Settings → Pages → **Source: GitHub Actions** (custom domain `tnp.nahraf.tech`).
+
+Why the APK is copied to the site instead of linking to GitHub: on phones with the GitHub app,
+Android opens every github.com link in that app, which asks students to sign in instead of
+downloading. If the site's copy is missing, the buttons fall back to the GitHub link automatically.
+
+Version, size and date on the page come from the GitHub API; edit `docs/assets/app.js` → `CONFIG`
+if the repo name changes.
