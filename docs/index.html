@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>TnP Student — Placement alerts for NSUT students</title>
+  <meta name="description" content="Free, open-source Android app for NSUT students: instant alerts when a new company is listed, one-tap apply, announcements, CGPA, resumes and hall card. Unofficial." />
+  <meta name="theme-color" content="#0E1120" />
+  <meta property="og:title" content="TnP Student — never miss a placement update" />
+  <meta property="og:description" content="Instant new-company alerts, one-tap apply, announcements, CGPA and resumes. Free & open source for NSUT students." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============================== NAV ============================== -->
+  <header class="nav" id="top">
+    <div class="wrap nav__inner">
+      <a class="brand" href="#top" aria-label="TnP Student home">
+        <img src="assets/img/mark.svg" alt="" width="34" height="34" />
+        <span>TnP Student</span>
+      </a>
+      <nav class="nav__links" aria-label="Sections">
+        <a href="#features">Features</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#screens">Screens</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn--sm btn--grad js-download" href="#install">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+        Download
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============================== HERO ============================== -->
+    <section class="hero">
+      <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow reveal"><span class="dot"></span> Free · Open source · Android</p>
+          <h1 class="reveal">Every placement update.<br /><span class="grad-text">The moment it drops.</span></h1>
+          <p class="lead reveal">
+            TnP Student puts the NSUT placement portal in your pocket — a chime the second a new
+            company is listed, one-tap apply with an eligibility check, announcements, CGPA,
+            resumes and your hall card.
+          </p>
+
+          <div class="cta reveal">
+            <a class="btn btn--lg btn--grad js-download" href="#install" id="hero-download">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+              <span>
+                <strong>Download for Android</strong>
+                <small class="js-release-meta">Latest version · free</small>
+              </span>
+            </a>
+            <a class="btn btn--lg btn--ghost js-github" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+              <span><strong>View source</strong><small>on GitHub</small></span>
+            </a>
+          </div>
+
+          <ul class="trust reveal">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg> Android 7.0+</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg> Updates itself</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg> No ads, no tracking</li>
+          </ul>
+
+          <div class="qr reveal" id="qr-card" hidden>
+            <div class="qr__code" id="qr" aria-label="QR code to download the app"></div>
+            <div>
+              <strong>On a laptop?</strong>
+              <p>Scan with your phone camera to download straight to Android.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual reveal">
+          <div class="phone phone--hero">
+            <img src="assets/screens/home.jpg" alt="TnP Student home screen with announcements" width="540" height="1200" />
+          </div>
+          <div class="float-card float-card--notif" aria-hidden="true">
+            <div class="notif__app"><img src="assets/img/mark.svg" alt="" width="18" height="18" /> TnP Student · now <span class="bell">🔔</span></div>
+            <div class="notif__title">🏢 New company: Google</div>
+            <div class="notif__body">Software Engineer (FTE) · ₹32 LPA · Apply by Fri 5 PM</div>
+          </div>
+          <div class="float-card float-card--stat" aria-hidden="true">
+            <span class="ring"><span>✓</span></span>
+            <div><strong>You're eligible</strong><small>11 of 11 criteria met</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== STRIP ============================== -->
+    <section class="strip" aria-label="Highlights">
+      <div class="wrap strip__grid">
+        <div><strong>15 min</strong><span>background checks, even when closed</span></div>
+        <div><strong>1 tap</strong><span>apply with resume &amp; eligibility check</span></div>
+        <div><strong>0 servers</strong><span>talks only to the official TnP portal</span></div>
+        <div><strong>100%</strong><span>free &amp; open source</span></div>
+      </div>
+    </section>
+
+    <!-- ============================== FEATURES ============================== -->
+    <section class="section" id="features">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="kicker">Features</p>
+          <h2>Everything on the portal, built for your phone</h2>
+          <p>Same account as student.tnpnsut.in — just faster, cleaner and with alerts that actually reach you.</p>
+        </header>
+
+        <div class="features">
+          <article class="feature reveal">
+            <div class="feature__icon i-coral"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+            <h3>New-company alerts</h3>
+            <p>A distinct chime the moment TnP lists a company or role — company, package and deadline right in the notification.</p>
+          </article>
+          <article class="feature reveal">
+            <div class="feature__icon i-green"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <h3>Apply in one tap</h3>
+            <p>See every eligibility criterion at a glance, pick a resume, answer the company's questions, done. Withdraw anytime before the deadline.</p>
+          </article>
+          <article class="feature reveal">
+            <div class="feature__icon i-indigo"><svg viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+            <h3>Announcements</h3>
+            <p>Shortlists, schedules and notices in a clean timeline with search, tags and attachments that open right inside the app.</p>
+          </article>
+          <article class="feature reveal">
+            <div class="feature__icon i-blue"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
+            <h3>CGPA &amp; academics</h3>
+            <p>Semester-wise GPA chart, sync CGPA from IMS, and a drop-subject planner that suggests the best courses to drop.</p>
+          </article>
+          <article class="feature reveal">
+            <div class="feature__icon i-amber"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5"/></svg></div>
+            <h3>Resumes, forms &amp; NOC</h3>
+            <p>Keep up to three resumes, upload undertakings, request NOCs and track their status — all from your phone.</p>
+          </article>
+          <article class="feature reveal">
+            <div class="feature__icon i-teal"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h4v4"/></svg></div>
+            <h3>Hall card</h3>
+            <p>Your QR hall card always ready, plus a one-tap PDF download for placement drives.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== ALERTS ============================== -->
+    <section class="section section--dark" id="alerts">
+      <div class="aurora aurora--soft" aria-hidden="true"><span></span><span></span></div>
+      <div class="wrap split">
+        <div class="split__copy reveal">
+          <p class="kicker kicker--light">Alerts that actually arrive</p>
+          <h2>Hear about a company before your batchmates do</h2>
+          <p>
+            The app wakes up every 15 minutes — even when it's closed and your phone is asleep —
+            checks the portal for anything new, and rings with its own chime so you know it's a
+            company, not just another app.
+          </p>
+          <ul class="checks">
+            <li><span>1</span><div><strong>Works when the app is closed</strong>Exact wake-up checks that survive deep sleep and restarts.</div></li>
+            <li><span>2</span><div><strong>Its own sound</strong>A bright chime for new companies, a softer one for announcements.</div></li>
+            <li><span>3</span><div><strong>Tap to open the job</strong>Straight to eligibility and the Apply button.</div></li>
+          </ul>
+          <button class="btn btn--ghost-light js-play" type="button" aria-label="Play the new-company chime">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+            Hear the new-company chime
+          </button>
+          <audio id="chime" src="assets/sounds/tnp_new_company.wav" preload="none"></audio>
+        </div>
+        <div class="split__visual reveal">
+          <div class="phone phone--tilt">
+            <img src="assets/screens/notification.jpg" alt="Notification for a new company shown on the lock screen" width="540" height="1200" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== SCREENS ============================== -->
+    <section class="section" id="screens">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="kicker">Screens</p>
+          <h2>Designed like an app you'd actually want to open</h2>
+          <p>Light and dark themes, smooth animations, and everything one tap away. <em>Shown with sample data.</em></p>
+        </header>
+      </div>
+      <div class="gallery" tabindex="0" aria-label="App screenshots, scroll horizontally">
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/home.jpg" alt="Home with announcements" loading="lazy" width="540" height="1200" /></div><figcaption>Home &amp; announcements</figcaption></figure>
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/jobs.jpg" alt="Job openings list" loading="lazy" width="540" height="1200" /></div><figcaption>Openings with deadlines</figcaption></figure>
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/job.jpg" alt="Job detail with eligibility check" loading="lazy" width="540" height="1200" /></div><figcaption>Eligibility at a glance</figcaption></figure>
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/profile.jpg" alt="Profile with semester GPA chart" loading="lazy" width="540" height="1200" /></div><figcaption>CGPA &amp; resumes</figcaption></figure>
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/hallcard.jpg" alt="Hall card with QR code" loading="lazy" width="540" height="1200" /></div><figcaption>Hall card</figcaption></figure>
+        <figure class="shot reveal"><div class="phone"><img src="assets/screens/dark.jpg" alt="Home screen in dark mode" loading="lazy" width="540" height="1200" /></div><figcaption>Dark mode</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ============================== INSTALL ============================== -->
+    <section class="section section--tint" id="install">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="kicker">Install</p>
+          <h2>Ready in under a minute</h2>
+          <p>It's an APK, so it installs directly — no Play Store needed.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step__num">1</span>
+            <h3>Download</h3>
+            <p>Tap the button below on your Android phone. The file is about 70 MB.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">2</span>
+            <h3>Allow the install</h3>
+            <p>Open the downloaded file. If Android asks, allow your browser to <em>install unknown apps</em>, then tap Install.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">3</span>
+            <h3>Sign in &amp; allow alerts</h3>
+            <p>Use your TnP portal email and password, allow notifications and background activity — you're set.</p>
+          </li>
+        </ol>
+
+        <div class="download-card reveal">
+          <div class="download-card__icon"><img src="assets/img/mark.svg" alt="" width="64" height="64" /></div>
+          <div class="download-card__info">
+            <h3>TnP Student for Android</h3>
+            <p class="js-release-meta-long">Latest version · Android 7.0 or newer · free</p>
+            <p class="ios-note" id="ios-note" hidden>📱 Looks like you're on an iPhone — the app is Android-only for now.</p>
+          </div>
+          <a class="btn btn--lg btn--grad js-download" href="#" id="main-download">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+            <span><strong>Download APK</strong><small class="js-release-size">Direct download</small></span>
+          </a>
+        </div>
+
+        <p class="update-note reveal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>
+          <span><strong>Updates are automatic.</strong> When a new version is released, the app notifies you and installs it in a tap — your sign-in stays.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================== PRIVACY ============================== -->
+    <section class="section">
+      <div class="wrap privacy reveal">
+        <div class="privacy__icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div>
+          <h2>Your account stays yours</h2>
+          <p>
+            The app talks <strong>only</strong> to the official TnP portal (api.tnpnsut.in) — the same
+            server the website uses. There is no middleman server, no analytics and no ads. Your
+            sign-in token is stored encrypted on your phone. Every line of code is public on GitHub,
+            so anyone can check.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== FAQ ============================== -->
+    <section class="section section--tint" id="faq">
+      <div class="wrap wrap--narrow">
+        <header class="section__head reveal">
+          <p class="kicker">FAQ</p>
+          <h2>Questions students ask</h2>
+        </header>
+
+        <div class="faq">
+          <details class="reveal">
+            <summary>Is this the official TnP app?</summary>
+            <p>No. TnP Student is an unofficial, open-source app built by a student. It uses your existing TnP portal account and the same portal as student.tnpnsut.in, so everything you do in the app is visible on the website too.</p>
+          </details>
+          <details class="reveal">
+            <summary>Is it safe to sign in?</summary>
+            <p>Your email and password are sent directly to the official TnP server over HTTPS — never to anyone else. The source code is public, so you (or a friend) can verify exactly what it does.</p>
+          </details>
+          <details class="reveal">
+            <summary>Why isn't it on the Play Store?</summary>
+            <p>It's distributed as a free APK from GitHub to keep it simple and open. Android will ask you to allow installing it once; after that, updates arrive inside the app.</p>
+          </details>
+          <details class="reveal">
+            <summary>Alerts only show up when I open the app — what do I do?</summary>
+            <p>Your phone is saving battery by pausing the app. Open <em>More → Notifications</em> and tap the background-checks row, then allow background activity. On Xiaomi, Redmi, Poco, Oppo, Realme, Vivo and OnePlus phones also turn on <em>Autostart</em> for TnP Student.</p>
+          </details>
+          <details class="reveal">
+            <summary>How do updates work?</summary>
+            <p>The app checks for new versions on its own. When one is out you'll get a notification; tap <em>Update now</em> and Android installs it over the old version, keeping your sign-in.</p>
+          </details>
+          <details class="reveal">
+            <summary>Is there an iPhone version?</summary>
+            <p>Not yet — the app is Android-only for now.</p>
+          </details>
+          <details class="reveal">
+            <summary>I don't have a TnP account yet.</summary>
+            <p>TnP accounts are created by the university for eligible students (usually from the second year). Once you have one, sign in with your college email.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== FINAL CTA ============================== -->
+    <section class="final">
+      <div class="aurora aurora--soft" aria-hidden="true"><span></span><span></span></div>
+      <div class="wrap final__inner reveal">
+        <img src="assets/img/mark.svg" alt="" width="72" height="72" />
+        <h2>Don't miss the next company.</h2>
+        <p>Install TnP Student and let the chime do the checking.</p>
+        <a class="btn btn--lg btn--grad js-download" href="#">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+          <span><strong>Download for Android</strong><small class="js-release-meta">Latest version · free</small></span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div class="brand brand--footer"><img src="assets/img/mark.svg" alt="" width="28" height="28" /><span>TnP Student</span></div>
+      <p class="credit">Designed &amp; developed by <a href="https://www.nahraf.tech" target="_blank" rel="noopener"><strong>Farhan</strong> · nahraf.tech</a></p>
+      <nav class="footer__links" aria-label="Footer">
+        <a class="js-github" href="#" target="_blank" rel="noopener">GitHub</a>
+        <a class="js-releases" href="#" target="_blank" rel="noopener">All releases</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <p class="disclaimer">Unofficial app. Not affiliated with, endorsed by, or operated by Netaji Subhas University of Technology or its Training &amp; Placement cell.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
