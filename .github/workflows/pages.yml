@@ -2,7 +2,8 @@
 # so tnp.nahraf.tech/TnP-Student.apk downloads directly — no github.com link, which the
 # GitHub mobile app would intercept and turn into a sign-in screen.
 #
-# Runs on every website change, on every published release, or manually (Actions tab).
+# Runs on every website change, whenever a release is published, edited, unpublished or
+# deleted (so the site always serves the current latest release), or manually (Actions tab).
 # One-time setup: Settings → Pages → Source: "GitHub Actions".
 name: Deploy website
 
@@ -11,12 +12,8 @@ on:
     branches: [main]
     paths: ['docs/**', '.github/workflows/pages.yml']
   release:
-    types: [published, edited]
+    types: [published, edited, unpublished, deleted]
   workflow_dispatch:
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
   # Release events run on the tag, which the github-pages environment does not allow
@@ -34,6 +31,10 @@ jobs:
   deploy:
     if: github.event_name != 'release'
     runs-on: ubuntu-latest
+    # Only the newest deploy matters; an older one still running is cancelled.
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     permissions:
       contents: read
       pages: write
